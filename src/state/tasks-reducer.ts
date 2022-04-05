@@ -1,6 +1,6 @@
 import {TasksStateType} from '../App';
 import {v1} from 'uuid';
-import {AddTodolistActionType, RemoveTodolistActionType} from './todolists-reducer';
+import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType} from './todolists-reducer';
 import {TaskPriorities, TaskStatuses, TaskType} from '../api/todolists-api'
 
 export type RemoveTaskActionType = {
@@ -34,6 +34,7 @@ type ActionsType = RemoveTaskActionType | AddTaskActionType
     | ChangeTaskTitleActionType
     | AddTodolistActionType
     | RemoveTodolistActionType
+    | SetTodolistsActionType
 
 const initialState: TasksStateType = {
     /*"todolistId1": [
@@ -57,6 +58,13 @@ const initialState: TasksStateType = {
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     switch (action.type) {
+        case "SET-TODOLISTS":
+            const stateCopy1 = {...state}
+            action.todos.forEach((tl) => {
+                stateCopy1[tl.id] = []
+            })
+            return stateCopy1
+
         case 'REMOVE-TASK': {
             const stateCopy = {...state}
             const tasks = stateCopy[action.todolistId];
@@ -81,7 +89,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case 'CHANGE-TASK-STATUS': {
             let todolistTasks = state[action.todolistId];
             let newTasksArray = todolistTasks
-                .map(t => t.id === action.taskId ? { ...t, status: action.status } : t);
+                .map(t => t.id === action.taskId ? {...t, status: action.status} : t);
 
             state[action.todolistId] = newTasksArray;
             return ({...state});
@@ -90,7 +98,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             let todolistTasks = state[action.todolistId];
             // найдём нужную таску:
             let newTasksArray = todolistTasks
-                .map(t => t.id === action.taskId ? { ...t, title: action.title } : t);
+                .map(t => t.id === action.taskId ? {...t, title: action.title} : t);
 
             state[action.todolistId] = newTasksArray;
             return ({...state});

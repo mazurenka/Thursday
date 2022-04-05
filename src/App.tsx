@@ -9,15 +9,14 @@ import {
     changeTodolistFilterAC,
     changeTodolistTitleAC,
     FilterValuesType,
-    removeTodolistAC, setTodolistsAC,
+    removeTodolistAC,
+    setTodolistsAC,
     TodolistDomainType
 } from './state/todolists-reducer'
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from './state/tasks-reducer';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './state/store';
 import {TaskStatuses, TaskType, todolistsAPI} from './api/todolists-api'
-import axios from "axios";
-
 
 export type TasksStateType = {
     [key: string]: Array<TaskType>
@@ -33,9 +32,9 @@ function App() {
     useEffect(() => {
         todolistsAPI.getTodolists()
             .then((res) => {
-            let todos = res.data
+                let todos = res.data
                 dispatch(setTodolistsAC(todos))
-        })
+            })
     }, [])
 
 
