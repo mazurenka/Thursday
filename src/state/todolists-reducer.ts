@@ -100,7 +100,7 @@ export type SetTodolistsActionType = ReturnType<typeof setTodolistsAC>
 
 //THUNK
 
-export const fetchTodolistsThunk = (dispatch: Dispatch, getState: () => AppRootStateType) => {
+export const fetchTodolistsTC = () => (dispatch: Dispatch, getState: () => AppRootStateType) => {
     // 1 server request
     todolistsAPI.getTodolists()
         .then((res) => {
