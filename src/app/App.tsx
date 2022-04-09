@@ -4,8 +4,13 @@ import {AppBar, Button, Container, IconButton, LinearProgress, Toolbar, Typograp
 
 import {Menu} from '@material-ui/icons'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
+import {useSelector} from "react-redux";
+import {AppRootStateType} from "./store";
+import {RequestStatusType} from "./app-reducer";
 
 function App() {
+
+    const status = useSelector<AppRootStateType, RequestStatusType>(state => state.app.status)
 
     return (
         <div className="App">
@@ -21,7 +26,9 @@ function App() {
                 </Toolbar>
             </AppBar>
 
-            <LinearProgress color="secondary" />
+            {status === 'loading' && <LinearProgress color="secondary" /> }
+
+
 
             <Container fixed>
                 <TodolistsList/>
