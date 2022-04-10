@@ -28,8 +28,6 @@ function App() {
 
             {status === 'loading' && <LinearProgress color="secondary" /> }
 
-
-
             <Container fixed>
                 <TodolistsList/>
             </Container>
