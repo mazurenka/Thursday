@@ -1,7 +1,3 @@
-import {TaskType, todolistsAPI} from "../api/todolists-api";
-import {Dispatch} from "redux";
-import {UpdateDomainTaskModelType} from "../features/TodolistsList/tasks-reducer";
-
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 const initialState = {
