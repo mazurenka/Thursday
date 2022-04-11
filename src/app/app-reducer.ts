@@ -20,20 +20,8 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
 }
 
 // actions
-export const setAppStatusAC = (status: string) => ({type: 'APP-STATUS', status} as const)
+export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
 
-// thunks
+export type SetAppStatusAT = ReturnType<typeof setAppStatusAC>
 
-
-
-export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
-    todolistsAPI.getTasks(todolistId)
-        .then((res) => {
-            const tasks = res.data.items
-            const action = setTasksAC(tasks, todolistId)
-            dispatch(action)
-        })
-}
-
-
-type ActionsType = any
+type ActionsType = SetAppStatusAT
