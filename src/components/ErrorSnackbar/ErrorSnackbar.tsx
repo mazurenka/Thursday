@@ -6,7 +6,7 @@ import {AppRootStateType} from "../../app/store";
 import {setAppErrorAC} from "../../app/app-reducer";
 
 function Alert(props: AlertProps) {
-    return <MuiAlert  elevation={6} variant="filled" {...props} />
+    return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 
 export function ErrorSnackbar() {
