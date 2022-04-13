@@ -2,7 +2,7 @@ import {AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType}
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../api/todolists-api'
 import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
-import {setAppErrorAC, SetAppErrorAT, setAppStatusAC, SetAppStatusAT} from "../../app/app-reducer";
+import {SetAppErrorAT, setAppStatusAC, SetAppStatusAT} from "../../app/app-reducer";
 import {AxiosError} from "axios";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
 
@@ -72,15 +72,21 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: D
         })
 }
 
+export enum ResponseStatuses {
+    success = 0,
+    error = 1,
+    captcha = 10
+}
+
 export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     todolistsAPI.createTask(todolistId, title)
         .then(res => {
-            if (res.data.resultCode === 0) {
+            if (res.data.resultCode === ResponseStatuses.success) {
                 dispatch(addTaskAC(res.data.data.item))
                 dispatch(setAppStatusAC('succeeded'))
             } else {
-                handleServerAppError(res.data, dispatch)
+                handleServerAppError<{ item: TaskType }>(res.data, dispatch)
             }
         })
         .catch((err: AxiosError) => {
@@ -93,7 +99,6 @@ export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelT
         const state = getState()
         const task = state.tasks[todolistId].find(t => t.id === taskId)
         if (!task) {
-            //throw new Error("task not found in the state");
             console.warn('task not found in the state')
             return
         }
